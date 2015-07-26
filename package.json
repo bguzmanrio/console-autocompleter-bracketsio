@@ -1,8 +1,8 @@
 {
-    "name": "bguzmanrio.console-extender",
+    "name": "bguzmanrio.console-autocompleter",
     "title": "Auto console.log generator",
     "description": "Allows you to console.log a var with a simple shortcut",
-    "homepage": "https://github.com/bguzmanrio/console-extender-bracketsio",
+    "homepage": "https://github.com/bguzmanrio/console-autocompleter-bracketsio",
     "version": "0.2.0",
     "author": "Borja Guzman <bguzmanrio91@gmail.com>",
     "license": "MIT",
