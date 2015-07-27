@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 0.2.2 -2015-07-27
+
+### Fixed
+
+* Little token misplaced
+
 ## 0.2.1 - 2015-07-27
 
 ### Added (minor improvement)

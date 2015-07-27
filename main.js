@@ -88,7 +88,7 @@ define(function(require, exports, module) {
     function getWordStartPosition() {
       startPosition = {
         line: currentPos.line,
-        ch: currentPos.ch - word.length - console.log('This is positionsBack', positionsBack);
+        ch: currentPos.ch - word.length - positionsBack
       }; 
     };
 
