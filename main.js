@@ -24,17 +24,19 @@ define(function(require, exports, module) {
 
   var getWordInPosition = function(line, cursorColumn) {
     var words;
-    var lastWord;
+    var nWords;
+    var lastWord = '';
     var lastIndex = 1;
 
     line = line.substring(0, cursorColumn);
-    words = line.split(/\W/);
+    words = line.split(/\W/) || [];
+    nWords = words.length;
 
     return getLastWord();
 
     function getLastWord() {
-      lastWord = words[words.length - lastIndex];
-      if(!lastWord){
+      lastWord = words[nWords - lastIndex] || '';
+      if(!lastWord && lastIndex <= nWords){
         lastIndex++;
         positionsBack = lastIndex-1;
         lastWord = getLastWord();
@@ -42,6 +44,7 @@ define(function(require, exports, module) {
       return lastWord;
     }
   };
+  
 
   var setLog = function() {
     functionToApply = 'log';
@@ -65,36 +68,61 @@ define(function(require, exports, module) {
     getWord();
     getWordStartPosition();
     replaceWord();
+    setPosition();
 
-    function getEditor(){
+    function getEditor() {
       currentDoc = DocumentManager.getCurrentDocument();
       EditorManager = brackets.getModule("editor/EditorManager");
       editor = EditorManager.getCurrentFullEditor();
     };
 
-    function getPosition(){
+    function getPosition() {
       currentPos = editor.getCursorPos();
     };
 
-    function getWord(){
+    function getWord() {
       line = editor.document.getLine(currentPos.line);
       word = getWordInPosition(line, currentPos.ch);
     };
 
-    function getWordStartPosition(){
+    function getWordStartPosition() {
       startPosition = {
         line: currentPos.line,
-        ch: currentPos.ch - word.length - positionsBack
+        ch: currentPos.ch - word.length - console.log('This is positionsBack', positionsBack);
       }; 
     };
 
-    function replaceWord(){
+    function replaceWord() {
       var cLog = CONSOLE_LOG.replace(/\%w/g, word);
       var pos = editor.getSelection();
 
       cLog = cLog.replace(/\%d/g, defaultText + ' ').replace(/\%f/g, functionToApply);
       currentDoc.replaceRange(cLog, startPosition, pos.end);
     };
+    
+    function setPosition() {
+      currentPos = editor.getCursorPos();
+      
+      editor.setSelections([{
+        start: {
+          line : currentPos.line,
+          ch: currentPos.ch - word.length - 2 - 3
+        },
+        end: {
+          line : currentPos.line,
+          ch: currentPos.ch - word.length - 2 - 3
+        }
+      },{
+        start: {
+          line : currentPos.line,
+          ch: currentPos.ch - 2
+        },
+        end: {
+          line : currentPos.line,
+          ch: currentPos.ch - 2
+        }
+      }]);
+    }
   };
 
   var addEditMenu = function() {
@@ -103,7 +131,7 @@ define(function(require, exports, module) {
   };
   
   var loadPreferences = function() {
-    params = JSON.parse(localStorage.getItem(preferencesKey) || '{}');
+    params = getLocalStorage(preferencesKey);
     params = $.extend({}, fileParams, params);
     defaultText = params.defaultText || '';
   };
@@ -125,7 +153,7 @@ define(function(require, exports, module) {
   
   var editPreferences = function() {
     var inputValue;
-    var dialog = DialogManager.showModalDialog(DialogManager.DIALOG_BTN_CLASS_NORMAL, 'Prueba', params.dialogHTML);
+    var dialog = DialogManager.showModalDialog(DialogManager.DIALOG_BTN_CLASS_NORMAL, 'Prueba', params.dialogHTML.replace('%p', defaultText));
     
     dialog.done(function() {
       inputValue = dialog.getElement()[0].querySelector('input').value || '';
@@ -136,12 +164,32 @@ define(function(require, exports, module) {
   };
   
   var saveJSON = function() {
-    localStorage.setItem(preferencesKey, JSON.stringify(params));
+    saveLocalStorage(preferencesKey, {defaultText: params.defaultText});
+  };
+  
+  var saveDefaultJSON = function() {
+    saveLocalStorage(preferencesKey, {defaultText: fileParams.defaultText});
+  };
+  
+  var saveLocalStorage = function(key, obj) {
+    localStorage.setItem(key, JSON.stringify(obj));
+  };
+  
+  var getLocalStorage = function(key) {
+    return JSON.parse(localStorage.getItem(key) || '{}');
+  };
+  
+  var isFirstTime = function() {
+    var param = getLocalStorage(preferencesKey);
+    return param.defaultText.length === 0;
   };
 
 
   AppInit.appReady( function() {
     
+    if(isFirstTime()){
+      saveDefaultJSON();
+    }
     loadPreferences();
     registerConsoleInfo();
     registerConsoleLog();

@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## 0.2.1 - 2015-07-27
+
+### Added (minor improvement)
+
+* Now a dobule cursor will be set in the position of the replaced word, after the replacement
+
+### Fixed
+
+* Call stack size exceed error due to bad checking of the word in an empty line
+* The default text added to the console log comment is now saved correctly in the localstorage
+
+###
+
 ## 0.2.0 - 2015-07-24
 
 ### Added

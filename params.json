@@ -1,4 +1,4 @@
 {
   "defaultText": "This is",
-  "dialogHTML" : "<label for=\"log-autocompleter-default-text\">Type a text to be shown on console.log autocomplete</label><input id=\"log-autocompleter-default-text\" type=\"text\">"
+  "dialogHTML" : "<label for=\"log-autocompleter-default-text\">Type a text to be shown on console.log autocomplete</label><input id=\"log-autocompleter-default-text\" type=\"text\" placeholder=\"%p\">"
 }
