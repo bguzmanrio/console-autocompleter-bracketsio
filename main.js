@@ -180,8 +180,8 @@ define(function(require, exports, module) {
   };
   
   var isFirstTime = function() {
-    var param = getLocalStorage(preferencesKey);
-    return param.defaultText.length === 0;
+    var defaultText = getLocalStorage(preferencesKey).defaultText || '';
+    return defaultText<.defaultText.length === 0;
   };
 
 
