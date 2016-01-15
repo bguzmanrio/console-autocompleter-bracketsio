@@ -176,7 +176,7 @@ define(function(require, exports, module) {
   };
   
   var getLocalStorage = function(key) {
-    return JSON.parse(localStorage.getItem(key) || '{}');
+    return JSON.parse(localStorage.getItem(key) || '{defaultText: ""}');
   };
   
   var isFirstTime = function() {
