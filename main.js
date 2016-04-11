@@ -181,7 +181,7 @@ define(function(require, exports, module) {
   
   var isFirstTime = function() {
     var defaultText = getLocalStorage(preferencesKey).defaultText || '';
-    return defaultText<.defaultText.length === 0;
+    return defaultText<defaultText.length === 0;
   };
 
 
